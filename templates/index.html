@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="row">
+    <div class="text-center m-1">
+        <h1>
+            {% if lang == "eng" %}
+            The contribution of Artificial Intelligence in quantifying the severity of the musculoskeletal pathologies
+            {% elif lang == "ro" %}
+            Aportul Inteligenței Artificiale în cuantificarea severității patologiilor sistemului musculo-scheletal
+            {% else %}
+            Der Beitrag der künstlichen Intelligenz zur Quantifizierung der Schwere von Erkrankungen des Bewegungsapparates
+            {% endif %}
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="text-center">
+        <form action="/personal" method="get">
+            <button type="submit" class="btn btn-primary btn-lg m-5">Start</button>
+            <input type="hidden" name="lang" value={{ lang }}>
+        </form>
+    </div>
+</div>
+<form action='/' method="post">
+    <div class="row">
+        <div class="col-sm-9 text-end">
+            {% if lang == 'eng' %}
+            Choose your language:
+            {% elif lang == 'ro' %}
+            Alegeți limba:
+            {% else %}
+            Wählen Sie die Sprache:
+            {% endif %}
+        </div>
+        <button class="col" type="submit" name="lang" value="eng">
+            &#x1F1FA;&#x1F1F8;
+        </button>
+        <button class="col" type="submit" name="lang" value="ro">
+            &#127479;&#127476;
+        </button>
+        <button class="col" type="submit" name="lang" value="de">
+            &#127465;&#127466;
+        </button>
+    </div>
+</form>
+{% endblock %}

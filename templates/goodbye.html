@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block body %}
+    <h1 class="text-center m-4">
+        {% if lang == "eng" %}
+            Thank you!
+        {% elif lang == "ro" %}
+            Vă mulțumesc!
+        {% else %}
+            Danke schön!
+        {% endif %}
+    </h1>
+    <!--{{ data }}
+    <h2>Elapsed time: {{ elapsed_time }} seconds</h2>-->
+{% endblock %}

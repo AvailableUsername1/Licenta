@@ -1,0 +1,183 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="row">
+    <div class="col">
+        <img src="static/{{number}}.jpg" width="512" height="512">
+    </div>
+    <div class="col">
+        <form action="/form" method="post" id="aiform">
+            <fieldset>
+                <legend>
+                    {% if lang == "eng" %}
+                        Which RA stage is present in this X-Ray?
+                    {% elif lang == "ro" %}
+                        Indicați gradul AR din radiografia prezentată:
+                    {% else %}
+                        Welches RA-Stadium liegt in diesem Bild vor
+                    {% endif %}
+                </legend>
+                <div class="form-check">
+                    <input type="radio" id="I" name="q{{number}}" value="1" class="form-check-input">
+                    <label for="I" class="form-check-label">Grade I</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="II" name="q{{number}}" value="2" class="form-check-input">
+                    <label for="II" class="form-check-label">Grade II</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="III" name="q{{number}}" value="3" class="form-check-input">
+                    <label for="III" class="form-check-label">Grade III</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="IV" name="q{{number}}" value="4" class="form-check-input">
+                    <label for="IV" class="form-check-label">Grade IV</label>
+                </div>
+            </fieldset>
+            <input type="hidden" id="category" name="category" value={{category}}>
+            <input type="hidden" name="lang" value={{ lang }}>
+        </form>
+
+        {% if category == "True" %}
+            <button type="submit" name="question" value="{{number}}" form="aiform" id="nextbutton" class="btn btn-primary d-none mt-3 mb-3">Next</button>
+            <!--<h3>AI group</h3>-->
+            <button type="button" id="ai_button" onclick="aiButtonClick()" class="btn btn-info mt-3 mb-3">Get AI opinion</button>
+            <div class="loader mt-3 mb-3" id="ailoader"></div>
+            <div id="prediction" class="text-info mt-3 mb-3"></div>
+        {% else %} 
+            <button type="submit" name="question" value="{{number}}" form="aiform" class="btn btn-primary mt-3 mb-3">Next</button>
+            <!--<h3>Normal group</h3>-->
+        {% endif %}
+
+        <button type="button" class="btn btn-success" id="showInfo">
+            {% if lang == "eng" %}
+            Refresh RA-staging knowledge
+            {% elif lang == "de" %}
+            RA-Staging Wissen auffrischen
+            {% else %}
+            Reîmrospătați conoștințele despre stadiile AR
+            {% endif %}
+        </button>
+
+        <div id="overlay">
+            <div id="popup">
+                {% if lang == "eng" %}
+                <h5>Stage I</h5>
+                <p class="row">
+                    <ul>
+                        <li>Swelling</li>
+                        <li>Band osteoporosis</li>
+                        <li>Microcysts</li>
+                        <li>Microcalcifications</li>
+                    </ul>
+                </p>
+                <h5>Stage II</h5>
+                <p class="row">
+                    <ul>
+                        <li>Modifications from stage I</li>
+                        <li>Subchondral erosions + beginning of osteolysis</li>
+                        <li>Joint space narrowing</li>
+                    </ul>
+                </p>
+                <h5>Stage III</h5>
+                <p class="row">
+                    <ul>
+                        <li>Modifications from stage II</li>
+                        <li>Significant osteolysis</li>
+                        <li>Subluxation</li>
+                    </ul>
+                </p>
+                <h5>Stage IV</h5>
+                <p class="row">
+                    <ul>
+                        <li>Modifications from stage III</li>
+                        <li>Ankylosis</li>
+                        <li>Mutilating changes</li>
+                    </ul>
+                </p>
+                {% elif lang == "de" %}
+                <h5>Stadium I</h5>
+                <p class="row">
+                    <ul>
+                        <li>Schwellung</li>
+                        <li>Bandosteoporose</li>
+                        <li>Mikrozysten</li>
+                        <li>Mikroverkalkungen</li>
+                    </ul>
+                </p>
+                <h5>Stadium II</h5>
+                <p class="row">
+                    <ul>
+                        <li>Veränderungen ab Stadium I</li>
+                        <li>subchondrale Erosionen + Beginn der Osteolyse</li>
+                        <li>Gelenkspaltverengung</li>
+                    </ul>
+                </p>
+                <h5>Stadium III</h5>
+                <p class="row">
+                    <ul>
+                        <li>Veränderungen ab Stadium II</li>
+                        <li>erhebliche Osteolyse</li>
+                        <li>Subluxation</li>
+                    </ul>
+                </p>
+                <h5>Stadiul IV</h5>
+                <p class="row">
+                    <ul>
+                        <li>Veränderungen ab Stadium III</li>
+                        <li>Ankylose</li>
+                        <li>verstümmelnde Veränderungen</li>
+                    </ul>
+                </p>
+                {% else %}
+                <h5>Stadiul I</h5>
+                <p class="row">
+                    <ul>
+                        <li>Tumefiere</li>
+                        <li>Osteoporoză în bandă</li>
+                        <li>Microchiste</li>
+                        <li>Microcalcifieri</li>
+                    </ul>
+                </p>
+                <h5>Stadiul II</h5>
+                <p class="row">
+                    <ul>
+                        <li>Modificările din stadiul I</li>
+                        <li>Eroziuni subcondrale - mici osteolize</li>
+                        <li>Îngustări de spațiu articular</li>
+                    </ul>
+                </p>
+                <h5>Stadiul III</h5>
+                <p class="row">
+                    <ul>
+                        <li>Modificările din stadiul II</li>
+                        <li>Osteoliză semnificativă</li>
+                        <li>Subluxație</li>
+                    </ul>
+                </p>
+                <h5>Stadiul IV</h5>
+                <p class="row">
+                    <ul>
+                        <li>Modificările din stadiul III</li>
+                        <li>Anchiloză</li>
+                        <li>Modificări mutilante</li>
+                    </ul>
+                </p>
+                {% endif %}
+                <button type="button" id="closeButton" class="row btn btn-secondary">
+                    {% if lang == "eng" %}
+                    Close
+                    {% elif lang == "de" %}
+                    Schließen
+                    {% else %}
+                    Închide
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+
+        <h1 class="text-danger">
+            {{message}}
+        </h1>
+    </div>
+<script src="static/script.js"></script>
+{% endblock %}

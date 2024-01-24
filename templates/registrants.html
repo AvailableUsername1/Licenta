@@ -1,0 +1,6 @@
+{% extends 'layout.html' %}
+{% block body %}
+    {% for name in registrants %}
+        <p>{{name}} {{registrants[name]}}</p>
+    {% endfor %}
+{% endblock %}
